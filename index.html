@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Basics</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/vue@next" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>بکوژی وەحشەکان😁</h1>
+    </header>
+    <div id="game">
+      <section id="monster" class="container">
+        <h2>خوێنی وەحش</h2>
+        <div class="healthbar">
+          <div :style="monsterBarStyles" class="healthbar__value"></div>
+        </div>
+      </section>
+      <section id="player" class="container">
+        <h2>خوێنی من</h2>
+        <div class="healthbar">
+          <div :style="playerBarStyles" class="healthbar__value"></div>
+        </div>
+      </section>
+      <section v-if="winner" class="container">
+        <h2>یاریەکە تەواو بوو</h2>
+        <h2 v-if="winner==='player'">برتەوە</h2>
+        <h2 v-if="winner==='monster'">دۆڕایت</h2>
+        <h2 v-if="winner==='draw'">یەکسان بوون</h2>
+        <button @click="startGame">دەستپێکردن</button>
+      </section>
+      <section id="controls" v-else>
+        <button @click="attackMonster">لێدان</button>
+        <button :disabled="mayUseSpecialAttack" @click="specialAttack">
+          لێدانی بەهێز
+        </button>
+        <button @click="healPlayer">خوێن</button>
+        <button @click="surrender">خۆ بەدەستەوە دان</button>
+      </section>
+      <section id="log" class="container">
+        <h2>ئاماری شەڕەکە</h2>
+        <ul>
+          <li v-for="logMessage in logMessages">
+            <span
+              :class="{'log--player':logMessage.actionBy==='Player','log--monster':logMessage.actionBy==='Monster'}"
+              >{{ logMessage.actionBy==='Player' ?'تۆ ':'وەحشەکە ' }}</span
+            >
+            <span v-if="logMessage.actionType==='heal'"
+              >خوێنی خۆت پرکردەوە بە بڕی
+              <span class="log--heal">{{ logMessage.actionValue }}</span>
+              دەرەجە</span
+            >
+            <span v-else
+              >لێ{{ logMessage.actionBy==='Player' ?'ت دا':'ی دای ' }} بە بڕی
+              <span class="log--damage">{{ logMessage.actionValue }}</span>
+              دەرەجە</span
+            >
+          </li>
+        </ul>
+      </section>
+    </div>
+  </body>
+</html>
